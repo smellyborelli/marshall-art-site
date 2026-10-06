@@ -1,12 +1,13 @@
 /* Marshall Art Restorations — site stylesheet
-   Palette and type per design-context.md:
-   cream #ffebcd ground · charcoal #1c1c1c ink · Adamina headings · Poppins body */
+   Palette matches the LIVE site (settled 2026-10-06): near-black ground #00000a,
+   cream ink #ffebcd · Adamina headings · Poppins body.
+   Cream-on-charcoal variant preserved in git history (commit 1a89817). */
 
 :root {
-  --bg: #ffebcd;
-  --ink: #1c1c1c;
-  --ink-soft: rgba(28, 28, 28, 0.72);
-  --line: rgba(28, 28, 28, 0.3);
+  --bg: #00000a;
+  --ink: #ffebcd;
+  --ink-soft: rgba(255, 235, 205, 0.72);
+  --line: rgba(255, 235, 205, 0.3);
   --serif: "Adamina", Georgia, "Times New Roman", serif;
   --sans: "Poppins", Arial, sans-serif;
   --maxw: 800px;
@@ -169,6 +170,10 @@ figcaption {
   line-height: 1.55;
   color: var(--ink-soft);
 }
+
+/* bottom-align captions when the two images differ in height */
+.pair figure { display: flex; flex-direction: column; }
+.pair figcaption { margin-top: auto; padding-top: 10px; }
 
 /* ---------- gallery: portfolio wall ---------- */
 
