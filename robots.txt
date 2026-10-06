@@ -1,0 +1,8 @@
+# PREVIEW BUILD — search engines blocked until cutover.
+# At cutover replace this file with:
+#   User-agent: *
+#   Allow: /
+#   Sitemap: https://marshallartrestorations.com/sitemap.xml
+
+User-agent: *
+Disallow: /

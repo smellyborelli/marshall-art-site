@@ -1,0 +1,205 @@
+/* Marshall Art Restorations — site stylesheet
+   Palette and type per design-context.md:
+   cream #ffebcd ground · charcoal #1c1c1c ink · Adamina headings · Poppins body */
+
+:root {
+  --bg: #ffebcd;
+  --ink: #1c1c1c;
+  --ink-soft: rgba(28, 28, 28, 0.72);
+  --line: rgba(28, 28, 28, 0.3);
+  --serif: "Adamina", Georgia, "Times New Roman", serif;
+  --sans: "Poppins", Arial, sans-serif;
+  --maxw: 800px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 17px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--ink); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+
+.skip { position: absolute; left: -9999px; top: 0; background: var(--ink); color: var(--bg); padding: 8px 14px; }
+.skip:focus { left: 12px; top: 12px; z-index: 10; }
+
+/* ---------- header ---------- */
+
+.site-header { border-bottom: 1px solid var(--line); }
+
+.site-header .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 28px;
+  padding-top: 24px;
+  padding-bottom: 20px;
+}
+
+.brand {
+  font-family: var(--serif);
+  font-size: 1.22rem;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  line-height: 1.35;
+}
+
+.brand small {
+  display: block;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  margin-top: 3px;
+}
+
+.site-nav { display: flex; flex-wrap: wrap; gap: 4px 24px; align-items: baseline; }
+
+.site-nav a {
+  font-size: 0.76rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+}
+
+.site-nav a[aria-current="page"] { border-bottom-color: var(--ink); }
+.site-nav a:hover { border-bottom-color: var(--line); }
+
+/* ---------- hero ---------- */
+
+.hero { padding: 60px 0 46px; text-align: center; }
+
+.hero h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 4.5vw, 2.45rem);
+  line-height: 1.28;
+  margin: 0 0 12px;
+}
+
+.hero .tagline {
+  font-family: var(--serif);
+  font-size: clamp(1rem, 2.4vw, 1.22rem);
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.hero img {
+  width: 100%;
+  margin: 38px auto 0;
+  border: 1px solid var(--line);
+}
+
+/* ---------- sections ---------- */
+
+.section { border-top: 1px solid var(--line); padding: 46px 0; }
+
+.section h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.35;
+  margin: 0 0 14px;
+}
+
+.section p { margin: 0 0 14px; }
+.section p:last-child { margin-bottom: 0; }
+
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 34px; align-items: center; }
+.split img { border: 1px solid var(--line); }
+
+@media (max-width: 720px) {
+  .split { grid-template-columns: 1fr; }
+}
+
+/* ---------- contact ---------- */
+
+.contact { text-align: center; }
+.contact .phone { font-family: var(--serif); font-size: 1.45rem; margin: 6px 0; }
+.contact .phone a { text-decoration: none; }
+.contact .owner { font-size: 0.9rem; color: var(--ink-soft); letter-spacing: 0.06em; }
+
+/* ---------- gallery: before & after ---------- */
+
+.gallery-page .page-head { padding: 54px 0 34px; text-align: center; }
+
+.gallery-page h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  line-height: 1.3;
+  margin: 0;
+}
+
+.project { padding: 44px 0; border-top: 1px solid var(--line); }
+.project:first-of-type { border-top: 0; }
+
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.pair.three { grid-template-columns: repeat(3, 1fr); }
+
+@media (max-width: 720px) {
+  .pair, .pair.three { grid-template-columns: 1fr; }
+}
+
+figure { margin: 0; }
+figure img { width: 100%; border: 1px solid var(--line); }
+
+figcaption {
+  margin-top: 10px;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+/* ---------- gallery: portfolio wall ---------- */
+
+.wall {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.wall figure { flex: 0 1 calc(33.333% - 11px); min-width: 210px; }
+
+.wall figure img { width: 100%; }
+
+.portfolio-intro { text-align: center; margin: 0 0 30px; }
+
+/* ---------- footer ---------- */
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 28px 0 44px;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+
+.site-footer .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px 28px;
+}
+
+.site-footer p { margin: 0; }
+.site-footer a { color: inherit; }
