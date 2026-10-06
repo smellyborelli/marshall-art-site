@@ -20,3 +20,4 @@ This build is a preview. Every page carries `<meta name="robots" content="noinde
 - gallery-1/index.html — portfolio wall
 - assets/images/ — WebP images. originals/ holds the full-resolution captures from the old GoDaddy CDN and is not tracked in git.
 - assets/css/style.css — the only stylesheet. No JavaScript.
+- tools/verify.py — mechanical check of the built pages (metadata bounds, alt text, links, JSON-LD, NAP). Run it after any edit: `python3 tools/verify.py` (needs beautifulsoup4).
