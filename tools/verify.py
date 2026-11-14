@@ -48,7 +48,7 @@ for key, (rel, canonical) in PAGES.items():
     chk(len(h1s) == 1, f"exactly one h1 ({len(h1s)})")
 
     robots = soup.find("meta", attrs={"name": "robots"})
-    chk(bool(robots) and "noindex" in (robots.get("content", "")), "preview noindex present")
+    chk(not robots or "noindex" not in (robots.get("content", "")), "cutover: noindex absent")
 
     can = soup.find("link", attrs={"rel": "canonical"})
     chk(bool(can) and can.get("href") == canonical, f"canonical == {canonical}")
