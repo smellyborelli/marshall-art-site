@@ -1,17 +1,22 @@
 # marshall-art-site
 
-Static site for Marshall Art Restorations (marshallartrestorations.com — Linda J Marshall, New Gloucester, Maine). A hand-built replacement for the GoDaddy Website Builder site. Hosts free on GitHub Pages behind Cloudflare.
+Static site for Marshall Art Restorations (marshallartrestorations.com — Linda J Marshall, New Gloucester, Maine). A hand-built replacement for the GoDaddy Website Builder site. Hosts free on GitHub Pages.
 
-## Preview mode
+## Hosting
 
-This build is a preview. Every page carries `<meta name="robots" content="noindex">` and `robots.txt` disallows all crawlers, so it can sit next to the live GoDaddy site without competing in search.
+- Repo: github.com/smellyborelli/marshall-art-site, Pages from `main` at root.
+- Custom domain comes from the `CNAME` file (`marshallartrestorations.com`). `www` is a DNS CNAME to `smellyborelli.github.io`.
+- Cutover commit `b720baf` (2026-11-14): noindex removed from the three pages, robots.txt allows crawlers, CNAME added.
+- Email lives on Microsoft 365 (MX → `*.mail.protection.outlook.com`). Keep the MX and TXT records as they are.
 
-## Cutover checklist (one commit)
+## Remaining cutover step
 
-1. Remove `<meta name="robots" content="noindex">` from index.html, gallery/index.html, and gallery-1/index.html.
-2. Replace robots.txt with the allow version noted inside it.
-3. Add a CNAME file that contains the line: marshallartrestorations.com
-4. Push. Then point Cloudflare DNS at GitHub Pages (see the project migration plan).
+GoDaddy DNS, at the domain's DNS panel:
+
+1. Replace both `@` A records (15.197.148.33, 3.33.130.190) with the four GitHub Pages IPs.
+2. Point `www` CNAME at `smellyborelli.github.io`.
+
+Then GitHub issues the certificate. Turn on Enforce HTTPS once the certificate is ready.
 
 ## Structure
 
@@ -20,4 +25,4 @@ This build is a preview. Every page carries `<meta name="robots" content="noinde
 - gallery-1/index.html — portfolio wall
 - assets/images/ — WebP images. originals/ holds the full-resolution captures from the old GoDaddy CDN and is not tracked in git.
 - assets/css/style.css — the only stylesheet. No JavaScript.
-- tools/verify.py — mechanical check of the built pages (metadata bounds, alt text, links, JSON-LD, NAP). Run it after any edit: `python3 tools/verify.py` (needs beautifulsoup4).
+- tools/verify.py — mechanical check of the built pages (metadata bounds, alt text, links, JSON-LD, NAP, noindex absent). Run it after any edit: `python3 tools/verify.py` (needs beautifulsoup4).
