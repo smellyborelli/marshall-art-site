@@ -107,5 +107,41 @@ for p in sorted(SITE.rglob("*.html")):
         stray.append(str(rel))
 chk(not stray, "no stray pages", ", ".join(stray))
 
+print("\n=== no stray root files ===")
+allowed_root_files = {
+    ".gitignore", ".nojekyll", "CNAME", "README.md",
+    "apple-touch-icon.png", "favicon.png", "index.html", "robots.txt",
+    "sitemap.xml",
+}
+allowed_root_dirs = {"assets", "gallery", "gallery-1", "thanks", "tools", "hooks"}
+stray_root = []
+for entry in sorted(SITE.iterdir()):
+    name = entry.name
+    if name.startswith("."):
+        continue
+    if entry.is_dir() and name in allowed_root_dirs:
+        continue
+    if entry.is_file() and name in allowed_root_files:
+        continue
+    stray_root.append(name)
+chk(not stray_root, "no stray root files", ", ".join(stray_root))
+
+print("\n=== images live under assets ===")
+image_exts = {".png", ".jpg", ".jpeg", ".webp", ".gif"}
+root_icons = {"apple-touch-icon.png", "favicon.png"}
+stray_images = []
+for p in sorted(SITE.rglob("*")):
+    if not p.is_file() or p.suffix.lower() not in image_exts:
+        continue
+    rel = p.relative_to(SITE)
+    if rel.parts[0] == "assets":
+        continue
+    if any(part.startswith(".") for part in rel.parts):
+        continue
+    if len(rel.parts) == 1 and rel.name in root_icons:
+        continue
+    stray_images.append(str(rel))
+chk(not stray_images, "images live under assets", ", ".join(stray_images))
+
 print(f"\n{'='*50}\nRESULT: {'ALL PASS' if not fails else str(len(fails)) + ' FAILURES'}")
 sys.exit(1 if fails else 0)
