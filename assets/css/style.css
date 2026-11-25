@@ -151,6 +151,9 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-o
 .hero figure { aspect-ratio: 1292 / 960; margin: 110px auto 0; }
 .hero img { width: 100%; border: 1px solid var(--line); }
 
+/* two direct actions under the tagline, so a phone visitor sees them without scrolling */
+.hero-cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin: 28px 0 0; }
+
 /* ---------- sections: 1112px container, like live ---------- */
 
 .section { border-top: 1px solid var(--line); padding: 54px 0; }
