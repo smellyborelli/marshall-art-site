@@ -183,16 +183,104 @@
   (function () {
     var form = document.querySelector('.estimate-form');
     if (!form) return;
+
+    var button = form.querySelector('button[type="submit"]');
+    var status = form.querySelector('.form-status');
+
+    function showError() {
+      button.disabled = false;
+      button.textContent = 'Request an Estimate';
+      form.removeAttribute('aria-busy');
+      status.textContent = '';
+      status.appendChild(document.createTextNode('The form did not send. Call '));
+      var phoneLink = document.createElement('a');
+      phoneLink.href = 'tel:+14028504040';
+      phoneLink.textContent = '402 850 4040';
+      status.appendChild(phoneLink);
+      status.appendChild(document.createTextNode(' or email '));
+      var emailLink = document.createElement('a');
+      emailLink.href = 'mailto:marshallartrestorations@gmail.com';
+      emailLink.textContent = 'marshallartrestorations@gmail.com';
+      status.appendChild(emailLink);
+      status.appendChild(document.createTextNode('.'));
+      status.hidden = false;
+    }
+
     form.addEventListener('submit', function (event) {
+      var honey = form.elements._honey;
+      if (honey && honey.value) {
+        event.preventDefault();
+        location.href = '/thanks/';
+        return;
+      }
+
       var phone = form.elements.phone.value.trim();
       var email = form.elements.email.value.trim();
       if (!phone && !email) {
         event.preventDefault();
-        var status = form.querySelector('.form-status');
         status.textContent = 'Give a phone number or an email address.';
         status.hidden = false;
         form.elements.phone.focus();
+        return;
       }
+
+      event.preventDefault();
+
+      button.disabled = true;
+      button.textContent = 'Sending...';
+      form.setAttribute('aria-busy', 'true');
+
+      var slowTimer = setTimeout(function () {
+        button.textContent = 'Still sending...';
+      }, 8000);
+      var noteTimer = setTimeout(function () {
+        status.textContent = 'This is taking longer than usual. You can call ';
+        var phoneLink = document.createElement('a');
+        phoneLink.href = 'tel:+14028504040';
+        phoneLink.textContent = '402 850 4040';
+        status.appendChild(phoneLink);
+        status.appendChild(document.createTextNode(' instead.'));
+        status.hidden = false;
+      }, 45000);
+
+      function settle() {
+        clearTimeout(slowTimer);
+        clearTimeout(noteTimer);
+      }
+
+      var payload = {};
+      new FormData(form).forEach(function (value, key) {
+        payload[key] = value;
+      });
+
+      fetch('https://formsubmit.co/ajax/marshallartrestorations@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload),
+        keepalive: true
+      }).then(function (response) {
+        return response.json().then(function (body) {
+          return { response: response, body: body };
+        }, function () {
+          return { response: response, body: null };
+        });
+      }).then(function (result) {
+        settle();
+        var body = result.body;
+        var saysSuccess = body && (body.success === 'true' || body.success === true);
+        var saysFailure = body && body.success !== undefined && !saysSuccess;
+        if (saysSuccess || (result.response.ok && !saysFailure)) {
+          location.href = '/thanks/';
+        } else {
+          showError();
+        }
+      }).catch(function () {
+        settle();
+        showError();
+      });
     });
   }());
 </script>
