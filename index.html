@@ -251,6 +251,14 @@
 
       var data = new URLSearchParams(new FormData(form));
 
+      var name = (data.get('name') || '').trim();
+      var artwork = (data.get('artwork_type') || '').trim();
+      var subjectString = 'Estimate request from the website';
+      if (name && artwork) {
+        var fixed = 'Estimate request: ' + ' — ' + artwork;
+        subjectString = 'Estimate request: ' + name.slice(0, Math.min(40, 77 - fixed.length)) + ' — ' + artwork;
+      }
+
       function readJson(response) {
         return response.json().then(function (body) {
           return { response: response, body: body };
@@ -267,6 +275,7 @@
       }
 
       function sendToWeb3Forms() {
+        data.set('subject', subjectString);
         return fetch('https://api.web3forms.com/submit', {
           method: 'POST',
           body: data,
@@ -282,10 +291,10 @@
         data.forEach(function (value, key) {
           payload[key] = value;
         });
-        ['access_key', 'botcheck', 'redirect', 'subject', 'from_name'].forEach(function (key) {
+        ['_honey', 'access_key', 'botcheck', 'redirect', 'subject', 'from_name'].forEach(function (key) {
           delete payload[key];
         });
-        payload._subject = 'Estimate request from the website';
+        payload._subject = subjectString;
         return fetch('https://formsubmit.co/ajax/marshallartrestorations@gmail.com', {
           method: 'POST',
           headers: {
