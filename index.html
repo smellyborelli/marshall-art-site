@@ -132,11 +132,12 @@
         <a class="button button--call" href="tel:+14028504040">Call (402) 850-4040</a>
         <a class="button" href="mailto:marshallartrestorations@gmail.com?subject=Restoration%20estimate&amp;body=Hello%20Linda%2C%0A%0AI%20would%20like%20an%20estimate%20for%20a%20painting.%0A%0AThank%20you.">Email for an estimate</a>
       </div>
-      <form class="estimate-form" action="https://formsubmit.co/marshallartrestorations@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="Estimate request from the website">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" value="https://marshallartrestorations.com/thanks/">
+      <form class="estimate-form" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="98693b1d-a6db-4fb3-a567-dc26922c8143">
+        <input type="hidden" name="subject" value="Estimate request from the website">
+        <input type="hidden" name="from_name" value="Marshall Art Restorations website">
+        <input type="hidden" name="redirect" value="https://marshallartrestorations.com/thanks/">
+        <input type="hidden" name="botcheck">
         <div class="hp" aria-hidden="true">
           <input type="text" id="estimate-honey" name="_honey" tabindex="-1" autocomplete="off">
         </div>
@@ -248,36 +249,58 @@
         clearTimeout(noteTimer);
       }
 
-      var payload = {};
-      new FormData(form).forEach(function (value, key) {
-        payload[key] = value;
-      });
+      var data = new URLSearchParams(new FormData(form));
 
-      fetch('https://formsubmit.co/ajax/marshallartrestorations@gmail.com', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(payload),
-        keepalive: true
-      }).then(function (response) {
+      function readJson(response) {
         return response.json().then(function (body) {
           return { response: response, body: body };
         }, function () {
           return { response: response, body: null };
         });
-      }).then(function (result) {
-        settle();
+      }
+
+      function isSuccess(result) {
         var body = result.body;
         var saysSuccess = body && (body.success === 'true' || body.success === true);
         var saysFailure = body && body.success !== undefined && !saysSuccess;
-        if (saysSuccess || (result.response.ok && !saysFailure)) {
-          location.href = '/thanks/';
-        } else {
-          showError();
-        }
-      }).catch(function () {
+        return saysSuccess || (result.response.ok && !saysFailure);
+      }
+
+      function sendToWeb3Forms() {
+        return fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: data,
+          keepalive: true
+        }).then(readJson).then(function (result) {
+          if (!isSuccess(result)) throw new Error('Web3Forms did not accept the request');
+          return true;
+        });
+      }
+
+      function sendToFormSubmit() {
+        var payload = {};
+        data.forEach(function (value, key) {
+          payload[key] = value;
+        });
+        payload._subject = 'Estimate request from the website';
+        return fetch('https://formsubmit.co/ajax/marshallartrestorations@gmail.com', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(payload),
+          keepalive: true
+        }).then(readJson).then(function (result) {
+          if (!isSuccess(result)) throw new Error('FormSubmit did not accept the request');
+          return true;
+        });
+      }
+
+      sendToWeb3Forms().catch(sendToFormSubmit).then(function () {
+        settle();
+        location.href = '/thanks/';
+      }, function () {
         settle();
         showError();
       });
