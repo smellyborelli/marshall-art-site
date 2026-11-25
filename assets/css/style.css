@@ -5,6 +5,33 @@
    Palette: near-black ground #00000a, cream ink #ffebcd.
    Cream-on-charcoal variant preserved in git history (commit 1a89817). */
 
+/* Self-hosted latin subsets. font-display: optional removes the swap shift:
+   on a cold load the fallback renders and the webfont is used only if it
+   arrives before first paint. Fallback stacks below are unchanged. */
+@font-face {
+  font-family: "Adamina";
+  font-style: normal;
+  font-weight: 400;
+  font-display: optional;
+  src: url("../fonts/adamina-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-display: optional;
+  src: url("../fonts/poppins-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-display: optional;
+  src: url("../fonts/poppins-600.woff2") format("woff2");
+}
+
 :root {
   --bg: #00000a;
   --ink: #ffebcd;
