@@ -96,5 +96,16 @@ for key, (rel, _) in PAGES.items():
     chk("Marshall Art Restorations" in ft and "New Gloucester, ME" in ft and "(402) 850-4040" in ft,
         f"{key} footer NAP")
 
+print("\n=== no stray pages ===")
+allowed = {"index.html", "gallery/index.html", "gallery-1/index.html", "thanks/index.html"}
+stray = []
+for p in sorted(SITE.rglob("*.html")):
+    rel = p.relative_to(SITE)
+    if any(part.startswith(".") for part in rel.parts):
+        continue
+    if str(rel) not in allowed:
+        stray.append(str(rel))
+chk(not stray, "no stray pages", ", ".join(stray))
+
 print(f"\n{'='*50}\nRESULT: {'ALL PASS' if not fails else str(len(fails)) + ' FAILURES'}")
 sys.exit(1 if fails else 0)
