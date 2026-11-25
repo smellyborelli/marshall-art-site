@@ -267,6 +267,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-o
 
 @media (max-width: 720px) {
   .estimate-form { grid-template-columns: 1fr; }
+  .estimate-actions .button { width: 100%; text-align: center; }
 }
 
 /* ---------- gallery: before & after ---------- */
