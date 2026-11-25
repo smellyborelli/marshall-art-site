@@ -121,7 +121,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-o
   margin: 0;
 }
 
-.hero img { width: 100%; margin: 110px auto 0; border: 1px solid var(--line); }
+.hero figure { aspect-ratio: 1292 / 960; margin: 110px auto 0; }
+.hero img { width: 100%; border: 1px solid var(--line); }
 
 /* ---------- sections: 1112px container, like live ---------- */
 
@@ -162,6 +163,82 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-o
 .contact .phone a { text-decoration: none; }
 .contact .owner { font-size: 0.9rem; color: var(--ink-soft); letter-spacing: 0.06em; }
 
+/* ---------- estimate: two direct actions and a form ---------- */
+
+.estimate-actions { display: flex; flex-wrap: wrap; gap: 16px; margin: 0 0 34px; }
+
+.button {
+  display: inline-block;
+  padding: 14px 26px;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+}
+
+.button:hover { background: var(--ink); color: var(--bg); }
+
+.button--call { font-family: var(--serif); font-size: 1.2rem; }
+
+.estimate-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 24px;
+  max-width: 726px;
+}
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field--full { grid-column: 1 / -1; }
+
+.field label {
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.field input,
+.field select,
+.field textarea {
+  font: inherit;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  padding: 10px 12px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+.field select option { color: var(--bg); background: var(--ink); }
+
+.field-note { grid-column: 1 / -1; margin: 0; font-size: 0.9rem; color: var(--ink-soft); }
+
+.form-status { grid-column: 1 / -1; margin: 0; font-weight: 600; }
+
+.estimate-form button {
+  grid-column: 1 / -1;
+  justify-self: start;
+  font: inherit;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 14px 26px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+  cursor: pointer;
+}
+
+.estimate-form button:hover { background: transparent; color: var(--ink); }
+
+.hp { position: absolute; left: -9999px; top: auto; }
+
+@media (max-width: 720px) {
+  .estimate-form { grid-template-columns: 1fr; }
+}
+
 /* ---------- gallery: before & after ---------- */
 
 .gallery-page .page-head { padding: 44px 0 6px; text-align: center; }
@@ -172,6 +249,16 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-o
   font-size: clamp(1.4rem, 3.2vw, 1.8rem);
   line-height: 1.3;
   margin: 0;
+}
+
+.page-head h2 {
+  margin: 10px 0 0;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
 }
 
 .project { padding: 54px 0; border-top: 1px solid var(--line); }

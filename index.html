@@ -17,7 +17,7 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Adamina&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Adamina&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
   <script type="application/ld+json">
 {
@@ -90,13 +90,13 @@
     <h1>Art Restoration and Conservation in Maine</h1>
     <p class="tagline">Preserving Your Heirloom Art</p>
     <figure>
-      <img src="assets/images/restored-landscape-oil-painting-after-fire.webp" width="1292" height="960" alt="This oil painting suffered damage when the owner&#x27;s house had a fire. We were able to restore it. — Marshall Art Restorations, Maine.">
+      <img src="assets/images/restored-landscape-oil-painting-after-fire.webp" srcset="assets/images/restored-landscape-oil-painting-after-fire-800.webp 800w, assets/images/restored-landscape-oil-painting-after-fire.webp 1292w" sizes="100vw" width="1292" height="960" alt="This oil painting suffered damage when the owner&#x27;s house had a fire. We were able to restore it. — Marshall Art Restorations, Maine.">
     </figure>
   </section>
   <section class="section">
     <div class="wrap split">
     <figure>
-      <img src="assets/images/framed-pastoral-painting-studio-easel.webp" width="1600" height="1155" alt="A framed 19th-century pastoral oil painting on the studio easel. — Marshall Art Restorations, Maine.">
+      <img src="assets/images/framed-pastoral-painting-studio-easel.webp" srcset="assets/images/framed-pastoral-painting-studio-easel-800.webp 800w, assets/images/framed-pastoral-painting-studio-easel.webp 1600w" sizes="(max-width: 720px) 100vw, 50vw" width="1600" height="1155" alt="A framed 19th-century pastoral oil painting on the studio easel. — Marshall Art Restorations, Maine.">
     </figure>
       <div>
         <h2 class="center">Our Mission</h2>
@@ -122,6 +122,53 @@
       <p class="owner">Linda J Marshall</p>
     </div>
   </section>
+  <section class="section estimate" id="estimate">
+    <div class="wrap">
+      <h2>Request an estimate</h2>
+      <div class="estimate-actions">
+        <a class="button button--call" href="tel:+14028504040">Call (402) 850-4040</a>
+        <a class="button" href="mailto:marshallartrestorations@gmail.com?subject=Restoration%20estimate&amp;body=Hello%20Linda%2C%0A%0AI%20would%20like%20an%20estimate%20for%20a%20painting.%0A%0AThank%20you.">Email for an estimate</a>
+      </div>
+      <form class="estimate-form" action="https://formsubmit.co/marshallartrestorations@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="Estimate request from the website">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="https://marshallartrestorations.com/thanks/">
+        <div class="hp" aria-hidden="true">
+          <input type="text" id="estimate-honey" name="_honey" tabindex="-1" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="estimate-name">Name</label>
+          <input type="text" id="estimate-name" name="name" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="estimate-phone">Phone</label>
+          <input type="tel" id="estimate-phone" name="phone" autocomplete="tel">
+        </div>
+        <div class="field">
+          <label for="estimate-email">Email</label>
+          <input type="email" id="estimate-email" name="email" autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="estimate-artwork">Artwork type</label>
+          <select id="estimate-artwork" name="artwork_type">
+            <option value="oil painting">Oil painting</option>
+            <option value="portrait">Portrait</option>
+            <option value="canvas tear or puncture">Canvas tear or puncture</option>
+            <option value="flaking paint">Flaking paint</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="field field--full">
+          <label for="estimate-message">Message</label>
+          <textarea id="estimate-message" name="message" rows="5"></textarea>
+        </div>
+        <p class="field-note">Give a phone number or an email address.</p>
+        <p class="form-status" role="alert" hidden></p>
+        <button type="submit">Request estimate</button>
+      </form>
+    </div>
+  </section>
 </main>
 <footer class="site-footer">
   <div class="wrap">
@@ -129,5 +176,22 @@
     <p><strong>Marshall Art Restorations</strong> · New Gloucester, ME · <a href="tel:+14028504040">(402) 850-4040</a> · <a href="mailto:marshallartrestorations@gmail.com">marshallartrestorations@gmail.com</a></p>
   </div>
 </footer>
+<script>
+  (function () {
+    var form = document.querySelector('.estimate-form');
+    if (!form) return;
+    form.addEventListener('submit', function (event) {
+      var phone = form.elements.phone.value.trim();
+      var email = form.elements.email.value.trim();
+      if (!phone && !email) {
+        event.preventDefault();
+        var status = form.querySelector('.form-status');
+        status.textContent = 'Give a phone number or an email address.';
+        status.hidden = false;
+        form.elements.phone.focus();
+      }
+    });
+  }());
+</script>
 </body>
 </html>

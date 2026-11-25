@@ -18,11 +18,19 @@ GoDaddy DNS, at the domain's DNS panel:
 
 Then GitHub issues the certificate. Turn on Enforce HTTPS once the certificate is ready.
 
+## Estimate form
+
+The homepage estimate form posts to FormSubmit (`formsubmit.co`). On first use,
+FormSubmit sends one confirmation email to marshallartrestorations@gmail.com.
+Somebody must open that email and confirm the address before submissions are
+delivered.
+
 ## Structure
 
 - index.html — homepage
+- thanks/index.html — confirmation page for the estimate form
 - gallery/index.html — before & after, 8 project pairs
 - gallery-1/index.html — portfolio wall
 - assets/images/ — WebP images. originals/ holds the full-resolution captures from the old GoDaddy CDN and is not tracked in git.
-- assets/css/style.css — the only stylesheet. No JavaScript.
+- assets/css/style.css — the only stylesheet. The homepage carries a small inline script for the form fallback.
 - tools/verify.py — mechanical check of the built pages (metadata bounds, alt text, links, JSON-LD, NAP, noindex absent). Run it after any edit: `python3 tools/verify.py` (needs beautifulsoup4).
