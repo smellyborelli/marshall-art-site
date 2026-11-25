@@ -282,6 +282,9 @@
         data.forEach(function (value, key) {
           payload[key] = value;
         });
+        ['access_key', 'botcheck', 'redirect', 'subject', 'from_name'].forEach(function (key) {
+          delete payload[key];
+        });
         payload._subject = 'Estimate request from the website';
         return fetch('https://formsubmit.co/ajax/marshallartrestorations@gmail.com', {
           method: 'POST',
@@ -297,7 +300,7 @@
         });
       }
 
-      sendToWeb3Forms().catch(sendToFormSubmit).then(function () {
+      sendToFormSubmit().catch(sendToWeb3Forms).then(function () {
         settle();
         location.href = '/thanks/';
       }, function () {
