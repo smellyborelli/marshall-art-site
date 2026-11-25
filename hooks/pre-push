@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# Pre-push gate: the page check and the README check must both pass.
+#
+# git calls this hook with one stdin line per ref it will update:
+#   <local ref> <local sha> <remote ref> <remote sha>
+# A delete carries an all-zero local sha. git does not call the hook at all
+# when there is nothing to push, so an empty stdin means a hand run: check
+# anyway, so running the hook by hand exercises the real gate.
+#
+# The hook reads and runs checks only. It writes no files.
+
+set -uo pipefail
+
+root="$(git rev-parse --show-toplevel 2>/dev/null)" || {
+    echo "pre-push: not inside a git repository"
+    exit 1
+}
+cd "$root" || exit 1
+
+refs_seen=0
+refs_changed=0
+if [ ! -t 0 ]; then
+    while read -r local_ref local_sha remote_ref remote_sha; do
+        refs_seen=1
+        # All-zero local sha: the ref is deleted, nothing is published.
+        case "$local_sha" in
+            "" | *[!0]*) ;;
+            *) continue ;;
+        esac
+        # Already at that sha on the remote: nothing changes.
+        if [ "$local_sha" = "$remote_sha" ]; then
+            continue
+        fi
+        refs_changed=$((refs_changed + 1))
+    done
+fi
+
+if [ "$refs_seen" -eq 1 ] && [ "$refs_changed" -eq 0 ]; then
+    # A push that carries no change: run nothing.
+    exit 0
+fi
+
+# 1. The pages.
+if ! verify_output="$(python3 tools/verify.py 2>&1)"; then
+    printf '%s\n' "$verify_output" | tail -n 20
+    echo "BLOCKED: page check failed (python3 tools/verify.py). Fix the page before pushing."
+    exit 1
+fi
+
+# 2. The README.
+if ! python3 tools/readme_guard.py; then
+    echo "BLOCKED: README check failed (python3 tools/readme_guard.py)."
+    exit 1
+fi
+
+# 3. Both checks passed.
+echo "pre-push: page check and README check passed"
+exit 0
